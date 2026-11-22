@@ -1263,7 +1263,7 @@ function renderRatings(){const q=$("rtQ").value.trim().toLowerCase();let R=(S.ra
   $("rtBody").innerHTML=R.map(r=>`<tr><td class="num">${r[0]}</td><td class="num">${mvR(r)}</td><td><span class="tcell">${badge(r[1])}<b>${esc(r[1])}</b></span></td><td class="num">${(+r[3]).toFixed(1)}</td><td>${esc(r[4])}</td><td class="num" title="${r[14]!=null?(r[14]>0?"+":"")+r[14]+" wins vs a #25-level team":""}">${r[15]??"—"}</td><td class="num">${r[5]}</td><td class="num">${r[6]}</td><td class="num">${r[7]}</td><td class="num">${r[8]}</td><td class="num">${r[9]}</td><td class="num">${r[10]}</td><td class="num">${r[13]}</td><td>${cchip(r[2])}</td></tr>`).join("")}
 let pconf="";const pf=x=>x==null?"—":x>=99.95?">99%":x<0.05&&x>0?"<0.1%":x===0?"—":(x>=10?Math.round(x):x.toFixed(1))+"%";
 function projRows(){return ((S.proj&&S.proj.rows)||[]).map(r=>({t:r[0],conf:r[1],rec:r[2],proj:r[3],cg:r[4],champ:r[5],cfp:r[6],bye:r[7],semi:r[8],final:r[9],natl:r[10],undef:r[11]}))}
-function projField(){const P=projRows().slice().sort((a,b)=>b.cfp-a.cfp);const f=P.slice(0,12).sort((a,b)=>(b.bye-a.bye)||(b.cfp-a.cfp));return{field:f.map(r=>r.t),out:P.slice(12,16).map(r=>r.t),rows:f}}
+
 function renderProj(){const P=projRows();if(!P.length){$("prTiles").innerHTML=`<div class="status">Projections load with the data. They're rebuilt every Sunday and after Saturday's games.</div>`;return}
   const pm=S.proj||{};const by=k=>P.slice().sort((a,b)=>b[k]-a[k])[0];const fav=by("natl"),un=P.filter(r=>r.undef>=1).sort((a,b)=>b.undef-a.undef);
   $("prTiles").innerHTML=`<div class="tile"><div class="k">Title favorite</div><div class="v">${esc(fav.t)}</div><div class="s">${pf(fav.natl)} to win it all</div></div><div class="tile"><div class="k">Playoff locks</div><div class="v">${P.filter(r=>r.cfp>=90).length}</div><div class="s">Teams at 90%+</div></div><div class="tile"><div class="k">On the bubble</div><div class="v">${P.filter(r=>r.cfp>=25&&r.cfp<75).length}</div><div class="s">Teams at 25–75%</div></div><div class="tile"><div class="k">Best shot at perfect</div><div class="v">${un[0]?esc(un[0].t):"—"}</div><div class="s">${un[0]?pf(un[0].undef)+" to finish unbeaten":""}</div></div>`;
@@ -1893,8 +1893,8 @@ function renderGfxOpts(soft){if(soft&&document.activeElement&&($("gfxOpts").cont
      ${chk("go-arrows",gopt.arrows,"Show movement vs. saved baseline")}<div class="controls"><button class="btn" id="go-savebase" type="button">Save current ranks as the baseline</button><span class="muted small" id="go-base"></span></div>`}
   else if(gsel==="conf"){const confs=[...new Set(((S.ratings&&S.ratings.rows)||[]).map(r=>r[2]))];h=`<label for="go-conf">Conference</label>${sel("go-conf",confs.map(c=>[c,c]),gopt.conf)}
      <label for="go-tile">Tile style</label>${sel("go-tile",[["auto","Rounded cards with rank badge"],["poll","Logo + rank bar"]],gopt.tile)}${chk("go-arrows",gopt.arrows,"Show movement arrows")}`}
-  else if(gsel==="cfp"){if(!gopt.field){const f=autoField();gopt.field=f.field.join("\n");gopt.ffo=f.out.join("\n")}
-    h=`<p class="small muted">Seeded straight by RKR with the five highest-rated conference leaders guaranteed in. Edit the order to make it your own, one team per line, seed 1 first.</p><label for="go-field">Field (12)</label><textarea id="go-field">${esc(gopt.field)}</textarea><label for="go-ffo">First four out</label><textarea id="go-ffo" style="min-height:90px">${esc(gopt.ffo)}</textarea>${chk("go-cfpLines",gopt.cfpLines,"Show RKR lines under first-round games")}<div class="controls"><button class="btn" id="go-auto" type="button">Reset to index field</button>${(S.proj&&S.proj.rows)?'<button class="btn" id="go-projf" type="button">Use projected field</button>':""}</div>`}
+  else if(gsel==="cfp"){if(!gopt.field){const f=autoField();gopt.field=f.field.join("\n");gopt.ffo=f.out.join("\n");gopt.cfpAutoF=gopt.field}if(!WKJ)wkArchive().then(()=>{if(gsel==="cfp"&&gopt.field===gopt.cfpAutoF){const f=autoField();gopt.field=f.field.join("\n");gopt.ffo=f.out.join("\n");gopt.cfpAutoF=gopt.field;renderGfxOpts();queueBuild(0)}})
+    h=`<p class="small muted">Committee-style: ranked 60% résumé + 40% power rating (head-to-head breaks near-ties); the five highest-ranked projected conference champions are in, with the best Group of Six champion always the 12 seed; teams can move one seed line (never across the bye line) to avoid regular-season rematches in the first round and quarterfinals. Edit the order to make it your own, one team per line, seed 1 first.</p>${CFPN.length&&gopt.field===gopt.cfpAutoF?`<ul class="small muted" style="margin:4px 0 8px 18px">${CFPN.map(n=>`<li>${esc(n)}</li>`).join("")}</ul>`:""}<label for="go-field">Field (12)</label><textarea id="go-field">${esc(gopt.field)}</textarea><label for="go-ffo">First four out</label><textarea id="go-ffo" style="min-height:90px">${esc(gopt.ffo)}</textarea>${chk("go-cfpLines",gopt.cfpLines,"Show RKR lines under first-round games")}<div class="controls"><button class="btn" id="go-auto" type="button">Reset to committee-style field</button>${(S.proj&&S.proj.rows)?'<button class="btn" id="go-projf" type="button">Use projected field</button>':""}</div>`}
   else if(gsel==="heisman"){h=`<p class="small muted">The RKR Reed’s Heisman Watch: 85% live Heisman odds + 15% production (season PPA × team success).</p><label for="go-hsCount">How many players</label>${sel("go-hsCount",[[5,"5"],[10,"10"],[15,"15"]],+gopt.hsCount||10)}`}
   else if(gsel==="movers"){h=`<p class="small muted">Biggest week-over-week changes in the season simulations.</p><label for="go-mvKind">Odds</label>${sel("go-mvKind",[["cfp","CFP odds"],["champ","Conference title odds"]],gopt.mvKind||"cfp")}<label for="go-mvCount">Teams per side</label>${sel("go-mvCount",[[4,"4"],[5,"5"],[6,"6"],[8,"8"]],+gopt.mvCount||6)}`}
   else if(gsel==="wpchart"){const L=allGames().filter(g=>ESPNEID[String(g.id)]&&(g.done||Date.parse(g.k)<Date.now())).sort((a,b)=>String(b.k).localeCompare(String(a.k)));if(!gopt.wpGame&&L[0])gopt.wpGame=String(L[0].id);h=`<p class="small muted">The game's win-probability swings from the RKR live model, with an excitement score. Works for finished and in-progress games this week.</p><label for="go-wpGame">Game</label>${sel("go-wpGame",L.length?L.map(g=>[String(g.id),`${g.a} @ ${g.h}`]):[["","No games have started yet"]],gopt.wpGame)}`}
@@ -1957,11 +1957,42 @@ async function autoBuild(){if(ABRUN){ABAGAIN=true;return}ABRUN=true;try{await bu
 function queueBuild(ms){if(!lastName)return;clearTimeout(ABT);ABT=setTimeout(autoBuild,ms==null?300:ms)}
 ["gfxOpts","gfxStyle"].forEach(box=>{$(box).addEventListener("change",e=>{onOpt(e.target);queueBuild()});$(box).addEventListener("input",e=>{if(e.target.type==="text"||e.target.tagName==="TEXTAREA"||e.target.type==="color"||e.target.type==="range"){onOpt(e.target);queueBuild(e.target.type==="range"||e.target.type==="color"?250:600)}})});
 $("gfxStyle").addEventListener("click",e=>{if(e.target.id==="gs-reset"){GS=Object.assign({},GS_DEF);saveGS();gopt.alt=false;renderStyle();queueBuild(0)}});
-$("gfxOpts").addEventListener("click",async e=>{if(e.target.id==="go-projf"){const f=projField();gopt.field=f.field.join("\n");gopt.ffo=f.out.join("\n");renderGfxOpts();return}if(e.target.id==="go-auto"){gopt.field="";renderGfxOpts()}
+$("gfxOpts").addEventListener("click",async e=>{if(e.target.id==="go-projf"){const f=projField();gopt.field=f.field.join("\n");gopt.ffo=f.out.join("\n");gopt.cfpAutoF=gopt.field;renderGfxOpts();return}if(e.target.id==="go-auto"){gopt.field="";renderGfxOpts()}
   if(e.target.id==="go-savebase"){if(!DB){msg("Sign in to claude.ai to save a baseline.");return}const ranks={};((S.ratings&&S.ratings.rows)||[]).forEach(r=>ranks[r[1]]=r[0]);try{await DB.doc("gfx/prev").set({ranks,saved:new Date().toISOString(),week:(S.meta||{}).week||null});msg("Baseline saved. Next week's poll will show movement against today's ranks.")}catch(err){msg("Couldn't save the baseline: "+(err&&err.message||err))}}});
-function autoField(){const R=((S.ratings&&S.ratings.rows)||[]).slice().sort((a,b)=>a[0]-b[0]);const leaders={};R.forEach(r=>{if(r[2]!=="FBS Independents"&&!leaders[r[2]])leaders[r[2]]=r});
-  const auto=Object.values(leaders).sort((a,b)=>a[0]-b[0]).slice(0,5);const set=new Set(auto.map(r=>r[1]));for(const r of R){if(set.size>=12)break;set.add(r[1])}
-  const field=R.filter(r=>set.has(r[1])).map(r=>r[1]);const out=R.filter(r=>!set.has(r[1])).slice(0,4).map(r=>r[1]);return{field,out}}
+/* ===== CFP bracketology v2 (2026-11-22): committee-style.
+   Ranking: committee score = 60% résumé (strength of record) + 40% power rating (z-scores); teams within 0.15 of each other are ordered by head-to-head.
+   Field: the projected champion of each conference (highest conference-title odds in the season sims, else the top-ranked team), the best Group of Six champion is
+   always in and always the 12 seed; the next four highest-ranked champions get automatic bids; at-large spots fill by ranking.
+   Seeding: seeds 1–11 straight by ranking, then teams may move one line (never across the bye line between 4 and 5) to avoid regular-season rematches in the first
+   round (5v12, 6v11, 7v10, 8v9) and the quarterfinals (1 v 8/9, 2 v 7/10, 3 v 6/11, 4 v 5/12). ===== */
+const G6C=new Set(["American Athletic","Mountain West","Sun Belt","Mid-American","Conference USA","Pac-12"]);
+let CFPN=[];
+function cfpPlayed(){const P={},W={};const add=(a,h,ap,hp)=>{if(ap==null||hp==null)return;P[a+"|"+h]=P[h+"|"+a]=1;if(ap!==hp){const w=ap>hp?a:h;W[a+"|"+h]=W[h+"|"+a]=w}};
+  try{for(const x of (WKJ&&WKJ.g)||[])add(x[3],x[4],x[5],x[6])}catch(e){}for(const g of allGames())if(g.done&&g.final)add(g.a,g.h,g.final.ap,g.final.hp);return {P,W}}
+function cmteRank(){const R=(S.ratings&&S.ratings.rows)||[];if(!R.length)return [];const z=a=>{const m=a.reduce((s2,x)=>s2+x,0)/a.length;const sd=Math.sqrt(a.reduce((s2,x)=>s2+(x-m)*(x-m),0)/a.length)||1;return a.map(x=>(x-m)/sd)};
+  const zr=z(R.map(r=>+r[3]||0)),zs=z(R.map(r=>r[14]!=null?+r[14]:0));const L=R.map((r,ix)=>({t:r[1],conf:r[2],rec:r[4],sc:0.6*zs[ix]+0.4*zr[ix]})).sort((a,b)=>b.sc-a.sc);
+  const {W}=cfpPlayed();for(let pass=0;pass<3;pass++)for(let k=0;k<L.length-1;k++){const a=L[k],b=L[k+1];if(a.sc-b.sc<0.15&&W[a.t+"|"+b.t]===b.t){L[k]=b;L[k+1]=a}}
+  return L}
+function projChamps(L){const ch={};const P=(typeof projRows==="function")?projRows():[];if(P.length){for(const r of P){if(r.conf==="FBS Independents")continue;if(!ch[r.conf]||r.champ>ch[r.conf].champ)ch[r.conf]=r}const o={};for(const c in ch)o[c]=ch[c].t;for(const x of L)if(x.conf!=="FBS Independents"&&!o[x.conf])o[x.conf]=x.t;return o}
+  for(const x of L)if(x.conf!=="FBS Independents"&&!ch[x.conf])ch[x.conf]=x.t;return ch}
+function deRematch(eleven,twelfth){const {P}=cfpPlayed();const met=(a,b)=>a&&b&&P[a+"|"+b];
+  const cost=sd=>{const s2=[null,...sd,twelfth];let c=0;const r1=[[5,12],[6,11],[7,10],[8,9]];for(const [x,y] of r1)if(met(s2[x],s2[y]))c+=10;const qf=[[1,8],[1,9],[2,7],[2,10],[3,6],[3,11],[4,5],[4,12]];for(const [x,y] of qf)if(met(s2[x],s2[y]))c+=3;return c};
+  let best=null;const rec=(k,cur,moves)=>{if(k>=eleven.length){const c=cost(cur)+moves;if(!best||c<best.c)best={c,sd:cur.slice(),moves};return}
+    rec(k+1,cur.concat([eleven[k]]),moves);if(k+1<eleven.length&&k!==3)rec(k+2,cur.concat([eleven[k+1],eleven[k]]),moves+1)};rec(0,[],0);
+  const notes=[];best.sd.forEach((t,ix)=>{if(eleven[ix]!==t&&eleven.indexOf(t)>ix)notes.push(`${t} moved up to the ${ix+1} seed and ${eleven[ix]} down to ${ix+2} to avoid a rematch`)});
+  const s2=[null,...best.sd,twelfth];const left=[];for(const [x,y] of [[5,12],[6,11],[7,10],[8,9]])if(met(s2[x],s2[y]))left.push(`${s2[x]} vs ${s2[y]} (first round) is a rematch no allowed move could avoid`);
+  return {seeds:best.sd,notes:notes.concat(left)}}
+function cfpBuild(order){const L=cmteRank();const pos={};L.forEach((x,ix)=>pos[x.t]=ix);const confOf={};L.forEach(x=>confOf[x.t]=x.conf);
+  const champs=projChamps(L);const cl=Object.entries(champs).map(([c,t])=>({c,t,i:pos[t]??999})).sort((a,b)=>a.i-b.i);
+  const g6=cl.find(x=>G6C.has(x.c));const autos=cl.filter(x=>x!==g6).slice(0,4).map(x=>x.t);
+  const pool=(order&&order.length?order.filter(t=>pos[t]!=null):L.map(x=>x.t));const set=new Set(autos);for(const t of pool){if(set.size>=11)break;if(g6&&t===g6.t)continue;set.add(t)}
+  if(set.size<11)for(const x of L){if(set.size>=11)break;if(!g6||x.t!==g6.t)set.add(x.t)}
+  const eleven=L.filter(x=>set.has(x.t)).map(x=>x.t);const twelfth=g6?g6.t:L.find(x=>!set.has(x.t)).t;const d=deRematch(eleven,twelfth);
+  const field=[...d.seeds,twelfth];const out=L.filter(x=>!field.includes(x.t)).slice(0,4).map(x=>x.t);
+  CFPN=[`Champions projected: ${cl.filter(x=>field.includes(x.t)).map(x=>x.t+" ("+x.c+")").join(", ")}.`].concat(g6?[`${g6.t} is the 12 seed as the best Group of Six champion.`]:[]).concat(d.notes);
+  return {field,out,notes:CFPN}}
+function autoField(){return cfpBuild(null)}
+function projField(){const P=projRows().slice().sort((a,b)=>b.cfp-a.cfp);const f=cfpBuild(P.map(r=>r.t));return {field:f.field,out:f.out,rows:f.field.map(t=>P.find(r=>r.t===t)).filter(Boolean)}}
 const msg=t=>$("gfxMsg").textContent=t;
 
 /* canvas helpers */
