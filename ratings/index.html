@@ -242,6 +242,7 @@ input,select,textarea{border-color:#3a5fa0}
 .welcome .wl a span{font-weight:400;font-size:12px;color:#e3eefb}
 .welcome .wx{position:absolute;top:8px;right:8px;border:0;background:rgba(255,255,255,.15);color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;line-height:1}
 .disclaim{margin:22px 0 6px;font-size:12px;color:#9fb4d6;text-align:center}
+/* studio browsers (owner on the public site) also get the Pypeline export */ body.viewer.studio h2.own.exp,body.viewer.studio p.own.exp,body.viewer.studio div.own.exp{display:block!important}body.viewer.studio div.controls.own.exp{display:flex!important}
 /* public visitors: owner tools hidden */
 body.viewer .own,body.viewer nav.tabs a[data-v="graphics"],body.viewer #v-graphics,body.viewer #mtReset,body.viewer #mtGfx,body.viewer #tmEdit,body.viewer #lvOwn,body.viewer [data-lvlog],body.viewer .controls:has(#pkName),body.viewer .controls:has(#pkAddGame),body.viewer .gfxhint{display:none!important}
 body.viewer nav.tabs{grid-template-columns:repeat(8,1fr)}
@@ -481,10 +482,10 @@ tr.llflash td{animation:llFlash 2.4s ease-out}@keyframes llFlash{0%,25%{backgrou
     <p class="muted small">Every underdog getting 10+ points, ranked by its chance to cover. Cover chance uses the RKR line (50% market + 50% RKR, the blend that predicted margins best in testing; σ 15.5). 🚨 Alert = 55%+ to cover: 93-58 (61.6%) against the spread at the opener in 2021–26. Tracked against the spread, separate from Reed’s Picks.</p>
     <div class="tiles" id="ddTiles"></div>
     <div class="cards" id="ddCards"></div>
-    <h2 class="own">Export for Pypeline</h2>
-    <p class="muted small own">Download everything on this hub (Reed’s Picks and leans, every game, power ratings with résumé, the record, the backtest, teams and method) in the format Pypeline's importer reads. Upload the file to Pypeline to update the RKR model page.</p>
-    <div class="controls own"><button class="btn primary" id="expXlsx" type="button">Download Excel (.xlsx)</button><button class="btn" id="expJson" type="button">Download JSON</button></div>
-    <div id="expMsg" class="muted small own"></div>
+    <h2 class="own exp">Export for Pypeline</h2>
+    <p class="muted small own exp">Download everything on this hub (Reed’s Picks and leans, every game, power ratings with résumé, the record, the backtest, teams and method) in the format Pypeline's importer reads. Upload the file to Pypeline to update the RKR model page.</p>
+    <div class="controls own exp"><button class="btn primary" id="expXlsx" type="button">Download Excel (.xlsx)</button><button class="btn" id="expJson" type="button">Download JSON</button></div>
+    <div id="expMsg" class="muted small own exp"></div>
   </section>
 
   <section class="view" id="v-props">
