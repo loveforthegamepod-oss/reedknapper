@@ -46,6 +46,14 @@ nav.tabs a[aria-current="page"]{color:var(--accent)}
 }
 .tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}
 @media (min-width:860px){.tiles{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.scnwrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;margin-top:12px;align-items:start}#scnOut{position:sticky;top:70px}
+.scnday{font:600 12px var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.scng{display:grid;grid-template-columns:1fr auto 1fr;gap:6px;align-items:center;margin-bottom:6px}.scng .at{text-align:center;color:var(--muted);font-size:12px}
+.scnb{display:flex;align-items:center;gap:8px;width:100%;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:inherit;cursor:pointer;font:600 14px var(--body);text-align:left}
+.scnb small{margin-left:auto;color:var(--muted);font-weight:500}.scnb.on{background:var(--accent);color:#06102a;border-color:var(--accent)}.scnb.on small{color:#06102a}.scnb.up{box-shadow:inset 0 0 0 2px #ffb347}
+.scnseed{display:grid;grid-template-columns:28px 1fr auto;gap:8px;align-items:center;padding:7px 10px;border-bottom:1px solid var(--line)}.scnseed .n{font:400 20px Anton,var(--display);text-align:center}
+.scnseed .chg{font-size:12px;font-weight:600}.scnseed.bye{background:rgba(255,255,255,.04)}
+@media(max-width:860px){.scnwrap{grid-template-columns:1fr}#scnOut{position:static}}
 .tile{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:10px;padding:12px}
 .tile .k{font:600 11px var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .tile .v{font:400 30px/1.1 "Anton",var(--display);margin-top:3px;font-variant-numeric:tabular-nums}
@@ -724,7 +732,7 @@ tr.llflash td{animation:llFlash 2.4s ease-out}@keyframes llFlash{0%,25%{backgrou
   </section>
 
   <section class="view" id="v-ratings">
-    <div class="controls" role="group" aria-label="Ratings views"><a class="btn primary" href="#ratings">RKR Power Ratings</a><a class="btn" href="#g6">Group of 6</a><a class="btn" href="#proj">Season projections</a><a class="btn" href="#potw">Week's best</a><a class="btn" href="#heisman">Heisman</a><a class="btn rkc" href="#computers" style="display:none">Computers</a></div>
+    <div class="controls" role="group" aria-label="Ratings views"><a class="btn primary" href="#ratings">RKR Power Ratings</a><a class="btn" href="#g6">Group of 6</a><a class="btn" href="#proj">Season projections</a><a class="btn" href="#potw">Week's best</a><a class="btn" href="#heisman">Heisman</a><a class="btn rkc" href="#computers" style="display:none">Computers</a><a class="btn rkc" href="#scenarios" style="display:none">Playoff scenarios</a></div>
     <h1>RKR Power Ratings</h1>
     <p class="muted small">Rating = points better than an average FBS team on a neutral field. Unit ranks (1 = best) are opponent-adjusted for the season. Résumé = strength-of-record rank: wins above what a #25-level team would expect against the same schedule. The rank order is by rating because that predicts games best; résumé shows what each team has earned.</p>
     <div class="controls" id="confChips" role="group" aria-label="Filter by conference"></div>
@@ -737,14 +745,14 @@ tr.llflash td{animation:llFlash 2.4s ease-out}@keyframes llFlash{0%,25%{backgrou
 
 
   <section class="view" id="v-heisman">
-    <div class="controls" role="group" aria-label="Ratings views"><a class="btn" href="#ratings">RKR Power Ratings</a><a class="btn" href="#g6">Group of 6</a><a class="btn" href="#proj">Season projections</a><a class="btn" href="#potw">Week's best</a><a class="btn primary" href="#heisman">Heisman</a><a class="btn rkc" href="#computers" style="display:none">Computers</a></div>
+    <div class="controls" role="group" aria-label="Ratings views"><a class="btn" href="#ratings">RKR Power Ratings</a><a class="btn" href="#g6">Group of 6</a><a class="btn" href="#proj">Season projections</a><a class="btn" href="#potw">Week's best</a><a class="btn primary" href="#heisman">Heisman</a><a class="btn rkc" href="#computers" style="display:none">Computers</a><a class="btn rkc" href="#scenarios" style="display:none">Playoff scenarios</a></div>
     <h1>Reed’s Heisman Watch</h1>
     <p class="muted small" id="hsSub">Live odds + RKR production.</p>
     <div id="hsBody"><div class="status">Loading…</div></div>
     <p class="small muted">Heisman % = 85% the live betting market (DraftKings odds via ESPN, with the bookmaker's margin removed) + 15% the RKR production score: season value added (total PPA on passes, runs and catches, garbage time excluded) × a team-success factor (0.6 + 0.6 × win %) × 0.8 outside the Power 4. Voters follow the narrative the market prices, so odds carry most of the weight; production flags players the market may be under- or over-rating (▲/▼ vs odds). Odds refresh every 15 minutes; production updates weekly. For entertainment only.</p>
   </section>
   <section class="view" id="v-potw">
-    <div class="controls" role="group" aria-label="Ratings views"><a class="btn" href="#ratings">RKR Power Ratings</a><a class="btn" href="#g6">Group of 6</a><a class="btn" href="#proj">Season projections</a><a class="btn primary" href="#potw">Week's best</a><a class="btn" href="#heisman">Heisman</a><a class="btn rkc" href="#computers" style="display:none">Computers</a></div>
+    <div class="controls" role="group" aria-label="Ratings views"><a class="btn" href="#ratings">RKR Power Ratings</a><a class="btn" href="#g6">Group of 6</a><a class="btn" href="#proj">Season projections</a><a class="btn primary" href="#potw">Week's best</a><a class="btn" href="#heisman">Heisman</a><a class="btn rkc" href="#computers" style="display:none">Computers</a><a class="btn rkc" href="#scenarios" style="display:none">Playoff scenarios</a></div>
     <h1>Performances of the week</h1>
     <p class="muted small" id="pwSub">Graded by RKR on that game alone, adjusted for the opponent.</p>
     <div class="pwgrid" id="pwBody"><div class="status">Loading…</div></div>
@@ -752,7 +760,7 @@ tr.llflash td{animation:llFlash 2.4s ease-out}@keyframes llFlash{0%,25%{backgrou
   </section>
 
   <section class="view" id="v-computers">
-    <div class="controls" role="group" aria-label="Ratings views"><a class="btn" href="#ratings">RKR Power Ratings</a><a class="btn" href="#g6">Group of 6</a><a class="btn" href="#proj">Season projections</a><a class="btn" href="#potw">Week's best</a><a class="btn" href="#heisman">Heisman</a><a class="btn primary rkc" href="#computers" style="display:none">Computers</a></div>
+    <div class="controls" role="group" aria-label="Ratings views"><a class="btn" href="#ratings">RKR Power Ratings</a><a class="btn" href="#g6">Group of 6</a><a class="btn" href="#proj">Season projections</a><a class="btn" href="#potw">Week's best</a><a class="btn" href="#heisman">Heisman</a><a class="btn primary rkc" href="#computers" style="display:none">Computers</a><a class="btn rkc" href="#scenarios" style="display:none">Playoff scenarios</a></div>
     <h1>Reed's Computers <span class="muted small">(BCS-style)</span></h1>
     <p class="muted small">Four computer formulas modeled on the BCS computers, which were barred from using margin of victory after 2001: they count only who you beat, who you lost to, and how good those teams are. <b>Colley</b> = Colley Matrix. <b>Wolfe</b> = win-probability rating. <b>Elo-chess</b> = Sagarin's win/loss Elo. <b>A&amp;H</b> = record + schedule, Anderson &amp; Hester-style. Like the BCS, each team's best and worst computer ranks are dropped and the middle two are averaged; Comp % = points from those two ranks (25 for 1st … 1 for 25th) out of 50. This is a résumé ranking: it feeds Reed's committee rank and bracketology (half of the résumé score), not the betting lines. Power = rank in the RKR Power Ratings, for comparison. <span id="bcSub"></span></p>
     <div class="controls" id="bcChips" role="group" aria-label="Filter by conference"></div>
@@ -760,8 +768,16 @@ tr.llflash td{animation:llFlash 2.4s ease-out}@keyframes llFlash{0%,25%{backgrou
     <div id="bcsBox" style="margin-top:10px"><div class="status">Loading…</div></div>
   </section>
 
+  <section class="view" id="v-scenarios">
+    <div class="controls" role="group" aria-label="Ratings views"><a class="btn" href="#ratings">RKR Power Ratings</a><a class="btn" href="#g6">Group of 6</a><a class="btn" href="#proj">Season projections</a><a class="btn" href="#potw">Week's best</a><a class="btn" href="#heisman">Heisman</a><a class="btn rkc" href="#computers" style="display:none">Computers</a><a class="btn primary rkc" href="#scenarios" style="display:none">Playoff scenarios</a></div>
+    <h1>Playoff scenarios</h1>
+    <p class="muted small">Pick the winner of every remaining game and watch the 12-team field change. Each pick starts on the model's favorite (the % is the model's win chance). The field uses Reed's committee logic: 60% résumé (strength of record + the BCS-style computers) and 40% power rating, the five best conference champions get in, the best Group of 6 champion is the 12 seed, and seeds shift one line to avoid regular-season rematches. Conference champions come from the best conference record in your scenario (ties go to the team the committee logic ranks higher), or the winner of the title game once it's on the schedule. RKR Power Ratings don't move with your picks; records, strength of record and the computers do.</p>
+    <div class="controls" id="scnCtl"><button class="btn" data-a="fav" type="button">Reset to model favorites</button><button class="btn" data-a="chaos" type="button">Chaos: every underdog wins</button><button class="btn" data-a="link" type="button">Copy link to my scenario</button><label class="small" style="display:flex;gap:6px;align-items:center;margin-left:6px"><input type="checkbox" id="scnAll"> Show every game</label></div>
+    <div class="scnwrap"><div id="scnGames"><div class="status">Loading…</div></div><div id="scnOut"></div></div>
+  </section>
+
   <section class="view" id="v-g6">
-    <div class="controls" role="group" aria-label="Ratings views"><a class="btn" href="#ratings">RKR Power Ratings</a><a class="btn primary" href="#g6">Group of 6</a><a class="btn" href="#proj">Season projections</a><a class="btn" href="#potw">Week's best</a><a class="btn" href="#heisman">Heisman</a><a class="btn rkc" href="#computers" style="display:none">Computers</a></div>
+    <div class="controls" role="group" aria-label="Ratings views"><a class="btn" href="#ratings">RKR Power Ratings</a><a class="btn primary" href="#g6">Group of 6</a><a class="btn" href="#proj">Season projections</a><a class="btn" href="#potw">Week's best</a><a class="btn" href="#heisman">Heisman</a><a class="btn rkc" href="#computers" style="display:none">Computers</a><a class="btn rkc" href="#scenarios" style="display:none">Playoff scenarios</a></div>
     <h1>Group of 6 power ratings</h1>
     <p class="muted small" id="g6Sub">Every team outside the SEC, Big Ten, Big 12, ACC and Notre Dame, ranked by Reed Knapper Ratings. Rating = points better than an average FBS team on a neutral field. Move compares with last week's G6 rank (your Weekly PR Board snapshot this week, then each Sunday's rebuild); the trend line shows the G6 rank every week since the preseason from the PR Movement sheet. Résumé = strength-of-record rank among G6 teams.</p>
     <div class="tiles" id="g6Tiles"></div>
@@ -778,7 +794,7 @@ tr.llflash td{animation:llFlash 2.4s ease-out}@keyframes llFlash{0%,25%{backgrou
   </section>
 
   <section class="view" id="v-proj">
-    <div class="controls" role="group" aria-label="Ratings views"><a class="btn" href="#ratings">RKR Power Ratings</a><a class="btn" href="#g6">Group of 6</a><a class="btn primary" href="#proj">Season projections</a><a class="btn" href="#potw">Week's best</a><a class="btn" href="#heisman">Heisman</a><a class="btn rkc" href="#computers" style="display:none">Computers</a></div>
+    <div class="controls" role="group" aria-label="Ratings views"><a class="btn" href="#ratings">RKR Power Ratings</a><a class="btn" href="#g6">Group of 6</a><a class="btn primary" href="#proj">Season projections</a><a class="btn" href="#potw">Week's best</a><a class="btn" href="#heisman">Heisman</a><a class="btn rkc" href="#computers" style="display:none">Computers</a><a class="btn rkc" href="#scenarios" style="display:none">Playoff scenarios</a></div>
     <h1>Season projections</h1>
     <p class="muted small" id="prNote">The rest of the regular season, conference title games and the 12-team playoff are simulated 10,000 times with RKR's ratings. Playoff selection is an approximation of the committee (losses, conference titles, strength and power-conference status), so treat playoff odds as a guide, not a forecast of the committee's exact picks.</p>
     <div class="tiles" id="prTiles"></div>
@@ -1777,9 +1793,9 @@ $("ppQ").addEventListener("input",()=>renderProps());$("ppSort").addEventListene
 $("ppList").addEventListener("input",e=>{const d=e.target.closest("details.pp");if(d)ppCheck(d)});$("ppList").addEventListener("change",e=>{const d=e.target.closest("details.pp");if(d)ppCheck(d)});
 let rq=0;function renderAll(){cancelAnimationFrame(rq);rq=requestAnimationFrame(()=>{if(!games().length&&!S.ratings)return;if(!ANFIRST){ANFIRST=1;setTimeout(()=>animView(ANV),0)}$("loadmsg").hidden=true;
   const m=S.meta||{};$("stamp").textContent=m.updated?("Updated "+new Date(m.updated).toLocaleString(undefined,{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})):"";
-  renderBets();renderUpsets();renderBoard();renderMuList();renderRatings();try{renderProj()}catch(e){}try{renderNotes()}catch(e){}try{renderPickem()}catch(e){}try{renderLive()}catch(e){}try{renderTotals()}catch(e){}try{renderG6()}catch(e){}try{renderPotw()}catch(e){}try{if(location.hash==="#windows")renderWindows()}catch(e){}try{renderRundown()}catch(e){}try{renderTeams()}catch(e){}try{if(location.hash==="#depth")renderDepth()}catch(e){}try{renderParlays()}catch(e){}try{mtSub();if(location.hash==="#meter")renderMeter();else mtSnap()}catch(e){}renderRecord();renderMethod();renderGfxOpts(true);renderLogoStatus();renderPredict(true)})}
+  renderBets();renderUpsets();renderBoard();renderMuList();renderRatings();try{renderProj()}catch(e){}try{renderNotes()}catch(e){}try{renderPickem()}catch(e){}try{renderLive()}catch(e){}try{renderTotals()}catch(e){}try{renderG6()}catch(e){}try{renderPotw()}catch(e){}try{if(location.hash==="#windows")renderWindows()}catch(e){}try{renderRundown()}catch(e){}try{renderTeams()}catch(e){}try{if(location.hash==="#depth")renderDepth()}catch(e){}try{renderParlays()}catch(e){}try{mtSub();if(location.hash==="#meter")renderMeter();else mtSnap()}catch(e){}try{if(location.hash==="#scenarios")renderScn()}catch(e){}renderRecord();renderMethod();renderGfxOpts(true);renderLogoStatus();renderPredict(true)})}
 
-function route(){let v=(location.hash||"#bets").slice(1);if(!$("v-"+v))v="bets";if(v==="computers"&&!bcsOn())v="ratings";if(v==="graphics"&&document.body.classList.contains("viewer")&&!document.body.classList.contains("studio"))v="bets";document.querySelectorAll(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));if(ANV!==v){ANV=v;setTimeout(()=>animView(v),0)}if(v==="g6")try{renderG6()}catch(e){}if(v==="potw")try{renderPotw()}catch(e){}if(v==="heisman")try{renderHeis()}catch(e){}if(v==="computers")try{renderBcs()}catch(e){}const nv=v==="proj"||v==="computers"||v==="g6"||v==="potw"||v==="heisman"?"ratings":v==="notes"||v==="rundown"?"matchups":v==="parlays"||v==="props"||v==="pickem"||v==="live"||v==="totals"||v==="windows"||v==="propparlays"||v==="meter"||v==="lines"?"bets":v==="depth"?"teams":v;if(v==="propparlays")try{renderPropParlays()}catch(e){}if(v==="windows")try{renderWindows()}catch(e){}if(v==="totals")try{renderTotals()}catch(e){}if(v==="live")try{renderLive()}catch(e){}if(v==="props")loadProps();if(v==="lines")try{renderLines()}catch(e){}if(v==="depth")try{renderDepth()}catch(e){}if(v==="meter")try{renderMeter()}catch(e){}if(v==="rundown")try{renderRundown()}catch(e){}if(v==="pickem")try{renderPickem()}catch(e){}document.querySelectorAll("nav.tabs a").forEach(a=>a.toggleAttribute("aria-current",a.dataset.v===nv))}
+function route(){let v=(location.hash||"#bets").slice(1);if(!$("v-"+v))v="bets";if((v==="computers"||v==="scenarios")&&!bcsOn())v="ratings";if(v==="graphics"&&document.body.classList.contains("viewer")&&!document.body.classList.contains("studio"))v="bets";document.querySelectorAll(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));if(ANV!==v){ANV=v;setTimeout(()=>animView(v),0)}if(v==="g6")try{renderG6()}catch(e){}if(v==="potw")try{renderPotw()}catch(e){}if(v==="heisman")try{renderHeis()}catch(e){}if(v==="computers")try{renderBcs()}catch(e){}if(v==="scenarios")try{renderScn()}catch(e){}const nv=v==="proj"||v==="computers"||v==="scenarios"||v==="g6"||v==="potw"||v==="heisman"?"ratings":v==="notes"||v==="rundown"?"matchups":v==="parlays"||v==="props"||v==="pickem"||v==="live"||v==="totals"||v==="windows"||v==="propparlays"||v==="meter"||v==="lines"?"bets":v==="depth"?"teams":v;if(v==="propparlays")try{renderPropParlays()}catch(e){}if(v==="windows")try{renderWindows()}catch(e){}if(v==="totals")try{renderTotals()}catch(e){}if(v==="live")try{renderLive()}catch(e){}if(v==="props")loadProps();if(v==="lines")try{renderLines()}catch(e){}if(v==="depth")try{renderDepth()}catch(e){}if(v==="meter")try{renderMeter()}catch(e){}if(v==="rundown")try{renderRundown()}catch(e){}if(v==="pickem")try{renderPickem()}catch(e){}document.querySelectorAll("nav.tabs a").forEach(a=>a.toggleAttribute("aria-current",a.dataset.v===nv))}
 window.addEventListener("hashchange",route);route();
 document.querySelectorAll("#v-board .controls button").forEach(b=>b.addEventListener("click",()=>{bf=b.dataset.f;document.querySelectorAll("#v-board .controls button").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));renderBoard()}));
 $("boardQ").addEventListener("input",renderBoard);$("muQ").addEventListener("input",renderMuList);$("rtQ").addEventListener("input",renderRatings);
@@ -2084,6 +2100,53 @@ function renderBcs(){const box=$("bcsBox");if(!box||!bcsOn())return;
   box.innerHTML=`<div class="tablebox"><table><thead><tr><th class="num">#</th><th>Team</th><th>Rec</th><th class="num" title="BCS-style computer percentage: points from the middle two ranks (25 for 1st … 1 for 25th) out of 50">Comp %</th><th class="num">Colley</th><th class="num">Wolfe</th><th class="num">Elo-chess</th><th class="num">A&amp;H</th><th class="num" title="Rank in the power ratings (predictive)">Power</th><th>Conf</th></tr></thead><tbody>${rows.map(x=>`<tr><td class="num">${x.rank}</td><td><span class="tcell">${badge(x.t)}<b>${esc(x.t)}</b></span></td><td>${esc(x.rec)}</td><td class="num">${x.pct?(x.pct).toFixed(3):"—"}</td><td class="num">${x.r.colley}</td><td class="num">${x.r.wolfe}</td><td class="num">${x.r.elo}</td><td class="num">${x.r.ah}</td><td class="num">${PR[x.t]??"—"}</td><td>${cf[x.t]?cchip(cf[x.t]):""}</td></tr>`).join("")}</tbody></table></div>`}
 function bcsInit(){if(!bcsOn())return;document.querySelectorAll(".rkc").forEach(a=>a.style.display="");const ch=$("bcChips");if(ch)ch.addEventListener("click",e=>{const b=e.target.closest("button[data-c]");if(!b)return;bconf=b.dataset.c;renderBcs()});const q=$("bcQ");if(q)q.addEventListener("input",renderBcs)}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bcsInit);else setTimeout(bcsInit,0);
+
+/* ===== Playoff scenario explorer (Reed Knapper build): pick winners, see the committee-style field ===== */
+let SCN=null,SCNB=null;
+function scnGames(){const T0=S.teams||{};const now=Date.now()-5*3600e3;return allGames().filter(g=>!g.done&&g.k&&new Date(g.k).getTime()>now&&(T0[g.a]||T0[g.h]))}
+function scnPA(g){const m=g.mkt!=null&&g.model!=null?0.5*(+g.mkt)+0.5*(+g.model):(g.model!=null?+g.model:(g.mkt!=null?+g.mkt:0));return nPhi(m/15.5)}
+function scnFav(g){return scnPA(g)>=.5?g.a:g.h}
+function scnInit(){if(SCN)return;SCN={};let q=null;try{q=new URLSearchParams(location.search).get("scn")}catch(e){}const byId={};for(const g of scnGames())byId[String(g.id)]=g;
+  if(q)for(const tok of q.split(",")){const [id,sd]=tok.split(".");const g=byId[id];if(g)SCN[id]=sd==="a"?g.a:g.h}
+  for(const g of scnGames())if(!SCN[String(g.id)])SCN[String(g.id)]=scnFav(g)}
+function scnChamps(rows,extra,L){const conf={},pos={};rows.forEach(r=>conf[r[1]]=r[2]);L.forEach((x,i)=>pos[x.t]=i);const W={},Lo={};const add=(w,l)=>{if(conf[w]&&conf[w]===conf[l]&&conf[w]!=="FBS Independents"){W[w]=(W[w]||0)+1;Lo[l]=(Lo[l]||0)+1}};
+  for(const x of (WKJ&&WKJ.g)||[]){if(x[5]==null||x[6]==null||+x[5]===+x[6]||+x[2])continue;const aw=+x[5]>+x[6];add(aw?x[3]:x[4],aw?x[4]:x[3])}
+  const title={};for(const e of extra){if(e.title){title[conf[e.w]]=e.w;continue}add(e.w,e.l)}
+  const best={};for(const r of rows){const c=r[2];if(c==="FBS Independents")continue;const w=W[r[1]]||0,l=Lo[r[1]]||0,pc=(w+l)?w/(w+l):0;const cur=best[c];const sc=pc*1000-(pos[r[1]]??999)/1000;if(!cur||sc>cur.sc)best[c]={t:r[1],sc}}
+  const o={};for(const c in best)o[c]=title[c]||best[c].t;return o}
+function scnRun(picks){const R0=(S.ratings&&S.ratings.rows)||[];if(R0.length<100)return null;const rows=R0.map(r=>r.slice());const by={};rows.forEach(r=>by[r[1]]=r);
+  const rs=rows.map(r=>+r[3]||0).sort((a,b)=>b-a);const R25=rs[24];const rat=t=>by[t]?+by[t][3]:-25;const p25=(opp,home)=>nPhi((R25-rat(opp)+(home?2.5:-2.5))/15.5);
+  const extra=[],wk=[];const conf={};rows.forEach(r=>conf[r[1]]=r[2]);
+  for(const g of scnGames()){const w=picks[String(g.id)];if(!w)continue;const l=w===g.a?g.h:g.a;const wHome=w===g.h&&!g.n,lHome=l===g.h&&!g.n;
+    const title=conf[w]&&conf[w]===conf[l]&&new Date(g.k)>=new Date(new Date(g.k).getFullYear()+"-11-30T12:00:00Z");extra.push({w,l,title});
+    const bump=(t,won)=>{const r=by[t];if(!r)return;const m=String(r[4]||"0-0").match(/(\d+)-(\d+)/);let W=m?+m[1]:0,L=m?+m[2]:0;won?W++:L++;r[4]=W+"-"+L;
+      const opp=won?l:w;const home=won?wHome:lHome;const p=p25(opp,home);r[14]=(r[14]!=null?+r[14]:0)+(won?1-p:-p)};
+    bump(w,true);bump(l,false);wk.push([String(g.id),99,0,g.a,g.h,w===g.a?1:0,w===g.h?1:0])}
+  let comp=null;if(bcsOn()&&WKJ&&WKJ.g){const keep=S.ratings;S.ratings={rows};try{comp=bcsCompute({g:WKJ.g.concat(wk),u:WKJ.u})}finally{S.ratings=keep}}
+  const keepS=S.ratings,keepB=BCSC,keepPC=projChamps;let out=null;
+  try{S.ratings=Object.assign({},keepS,{rows});if(comp)BCSC=comp;const L=cmteRank();projChamps=()=>scnChamps(rows,extra,L);const f=cfpBuild(null);out={field:f.field,out:f.out,notes:f.notes.slice(),L:L.slice(0,30),rec:Object.fromEntries(rows.map(r=>[r[1],r[4]]))}}
+  finally{S.ratings=keepS;BCSC=keepB;projChamps=keepPC}
+  try{autoField()}catch(e){}return out}
+function renderScn(){const gEl=$("scnGames"),oEl=$("scnOut");if(!gEl||!bcsOn())return;if(!(S.ratings&&S.ratings.rows&&S.ratings.rows.length>100)||!WKJ){gEl.innerHTML='<div class="status">Loading…</div>';wkArchive().then(()=>{if(S.ratings&&S.ratings.rows)renderScn()});return}
+  if(!BCSC){bcsLoad().then(()=>renderScn());}
+  scnInit();if(!SCNB){const fav={};for(const g of scnGames())fav[String(g.id)]=scnFav(g);SCNB=scnRun(fav)}
+  const cur=scnRun(SCN);if(!cur){gEl.innerHTML='<div class="status">Ratings are loading…</div>';return}
+  const top=new Set((SCNB?SCNB.L:[]).slice(0,30).map(x=>x.t).concat(cur.L.slice(0,30).map(x=>x.t)));const all=$("scnAll")&&$("scnAll").checked;
+  const G=scnGames().filter(g=>all||top.has(g.a)||top.has(g.h));const days={};for(const g of G){const d=new Date(g.k).toLocaleDateString([], {weekday:"long",month:"short",day:"numeric"});(days[d]=days[d]||[]).push(g)}
+  const btn=(g,t,p)=>{const on=SCN[String(g.id)]===t;const up=on&&p<.5;return `<button type="button" class="scnb${on?" on":""}${up?" up":""}" data-g="${esc(String(g.id))}" data-t="${esc(t)}" aria-pressed="${on}">${badge(t)}<span>${esc(T(t).abbr||t)}</span><small>${Math.round(p*100)}%</small></button>`};
+  gEl.innerHTML=G.length?Object.entries(days).map(([d,L])=>`<div class="scnday">${esc(d)}</div>`+L.map(g=>{const pa=scnPA(g);return `<div class="scng">${btn(g,g.a,pa)}<span class="at">${g.n?"vs":"@"}</span>${btn(g,g.h,1-pa)}</div>`}).join("")).join(""):'<div class="status">No remaining games on the schedule yet.</div>';
+  const base=SCNB?SCNB.field:[];const bIdx={};base.forEach((t,i)=>bIdx[t]=i+1);const ups=G.filter(g=>{const p=scnPA(g);return SCN[String(g.id)]!==scnFav(g)}).length;
+  const seed=(t,i)=>{const b=bIdx[t];const chg=b==null?'<span class="chg v-ok">NEW</span>':b===i+1?'<span class="chg muted">—</span>':b>i+1?`<span class="chg v-ok">▲${b-i-1}</span>`:`<span class="chg v-bad">▼${i+1-b}</span>`;return `<div class="scnseed${i<4?" bye":""}"><span class="n">${i+1}</span><span class="tcell">${badge(t)}<b>${esc(t)}</b> <span class="muted small">${esc(cur.rec[t]||"")}</span></span>${chg}</div>`};
+  const dropped=base.filter(t=>!cur.field.includes(t));
+  oEl.innerHTML=`<div class="card" style="padding:0;overflow:hidden"><div style="padding:12px 12px 6px"><h2 style="margin:0">Your 12-team field</h2><p class="small muted" style="margin:4px 0 0">${ups?`${ups} upset${ups>1?"s":""} picked`:"Every game goes to the model's favorite"} · seeds 1–4 get byes · changes vs the all-favorites field</p></div>${cur.field.map(seed).join("")}
+   <div style="padding:10px 12px"><p class="small"><b>First four out:</b> ${cur.out.map(esc).join(", ")}</p>${dropped.length?`<p class="small v-bad"><b>Knocked out:</b> ${dropped.map(esc).join(", ")}</p>`:""}<ul class="small muted" style="margin:6px 0 0 18px">${cur.notes.map(n=>`<li>${esc(n)}</li>`).join("")}</ul></div></div>`}
+function scnInitUI(){if(!bcsOn()||!$("scnGames"))return;$("scnGames").addEventListener("click",e=>{const b=e.target.closest(".scnb");if(!b)return;scnInit();SCN[b.dataset.g]=b.dataset.t;renderScn()});
+  const all=$("scnAll");if(all)all.addEventListener("change",renderScn);
+  $("scnCtl").addEventListener("click",async e=>{const b=e.target.closest("button[data-a]");if(!b)return;const a=b.dataset.a;scnInit();
+    if(a==="fav"){for(const g of scnGames())SCN[String(g.id)]=scnFav(g);renderScn()}
+    else if(a==="chaos"){for(const g of scnGames()){const f=scnFav(g);SCN[String(g.id)]=f===g.a?g.h:g.a}renderScn()}
+    else if(a==="link"){const tok=scnGames().filter(g=>SCN[String(g.id)]&&SCN[String(g.id)]!==scnFav(g)).map(g=>String(g.id)+"."+(SCN[String(g.id)]===g.a?"a":"h")).join(",");const u=location.origin+location.pathname+(tok?"?scn="+tok:"")+"#scenarios";try{await navigator.clipboard.writeText(u);b.textContent="Link copied ✓";setTimeout(()=>b.textContent="Copy link to my scenario",2000)}catch(err){prompt("Copy this link:",u)}}})}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",scnInitUI);else setTimeout(scnInitUI,0);
 function cmteRank(){const R=(S.ratings&&S.ratings.rows)||[];if(!R.length)return [];const z=a=>{const m=a.reduce((s2,x)=>s2+x,0)/a.length;const sd=Math.sqrt(a.reduce((s2,x)=>s2+(x-m)*(x-m),0)/a.length)||1;return a.map(x=>(x-m)/sd)};
   const zr=z(R.map(r=>+r[3]||0)),zs=z(R.map(r=>r[14]!=null?+r[14]:0));const zc=(bcsOn()&&BCSC)?z(R.map(r=>BCSC.by[r[1]]?BCSC.by[r[1]].pct*3-BCSC.by[r[1]].avg/25:0)):null;const L=R.map((r,ix)=>({t:r[1],conf:r[2],rec:r[4],sc:0.6*(zc?0.5*zs[ix]+0.5*zc[ix]:zs[ix])+0.4*zr[ix]})).sort((a,b)=>b.sc-a.sc);
   const {W}=cfpPlayed();for(let pass=0;pass<3;pass++)for(let k=0;k<L.length-1;k++){const a=L[k],b=L[k+1];if(a.sc-b.sc<0.15&&W[a.t+"|"+b.t]===b.t){L[k]=b;L[k+1]=a}}
