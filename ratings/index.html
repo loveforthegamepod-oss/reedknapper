@@ -3672,7 +3672,7 @@ g6Init();
 /* ---------- Prop results (graded game by game) ---------- */
 let PPG=null,pgF="all";
 const pgKey=(n,mk)=>pnk(n)+"|"+mk;
-function pgMap(){const M={};if(PPG&&PPG.list)for(const x of PPG.list)M[pgKey(x[0],x[2])]={a:x[8],r:x[9]};return M}
+function pgMap(){const M={};if(PPG&&PPG.list&&!(typeof PP!=="undefined"&&PP&&PPG.wk!=null&&PP.wk!=null&&+PPG.wk!==+PP.wk))for(const x of PPG.list)M[pgKey(x[0],x[2])]={a:x[8],r:x[9]};return M}
 function pgFmt(mk,a){if(a==null)return "—";if(mk==="atd")return a>0?(a+" TD"):"0 TD";return String(a)}
 function renderPropGrades(){const el=$("pgBody");if(!el)return;if(!PPG||!PPG.list){$("pgSub").textContent="Prop plays are graded as each game goes final.";$("pgTiles").innerHTML="";el.innerHTML="";return}
   const L=PPG.list,u=PPG.units;$("pgH").textContent=`Week ${PPG.wk} results`;
