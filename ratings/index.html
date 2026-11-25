@@ -1906,7 +1906,7 @@ async function gPullBall(c){const g=games().find(x=>String(x.id)===gopt.roGame)|
 async function gCompCmte(c){if(!BCSC)await bcsLoad();if(!BCSC)throw new Error("Computer rankings aren't loaded yet. Try again in a few seconds.");
   const cf=PLM&&PLM.lists&&PLM.lists.cfp&&PLM.lists.cfp.slots;const official=cf&&cf.filter(Boolean).length>=12;const cm=official?cf.filter(Boolean).slice(0,25):cmteRank().map(x=>x.t).slice(0,25);
   const comp=BCSC.rows.map(x=>x.t);const N=12;const A=comp.slice(0,N),B=cm.slice(0,N);const {W,H}=dims();
-  await roHead(c,W,`WEEK ${wk()} · COMPUTERS VS COMMITTEE`,"TOP 12 CHECK",official?"BCS-style computers vs the CFP rankings":"BCS-style computers vs Reed's committee projection");
+  await roHead(c,W,`WEEK ${wk()} · COMPUTERS VS COMMITTEE`,"TOP 12 CHECK",official?("BCS-style computers vs the CFP rankings"+((PLM.lists.cfp.u)?" of "+new Date(PLM.lists.cfp.u).toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"America/New_York"}):"")):"BCS-style computers vs Reed's committee projection");
   const top=304,foot=H>W?320:140,rowH=Math.min(84,(H-top-foot)/N),colW=(W-64*2-30)/2;const heads=["THE COMPUTERS",official?"THE COMMITTEE":"COMMITTEE (PROJ.)"];
   for(let k=0;k<2;k++){const L=k?B:A,O=k?A:B,x=64+k*(colW+30);c.font="26px Anton";c.fillStyle=GS.gold;c.textAlign="start";c.fillText(heads[k],x,top-14);c.textAlign="left";
     for(let i=0;i<L.length;i++){const t=L[i],y=top+i*rowH,miss=!O.includes(t);roPanel(c,x,y+3,colW,rowH-6);if(miss){c.save();rr(c,x,y+3,colW,rowH-6,Math.min(22,rowH*.2));c.strokeStyle=GS.gold;c.lineWidth=3;c.stroke();c.restore()}
