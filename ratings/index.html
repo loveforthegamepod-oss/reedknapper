@@ -1907,7 +1907,7 @@ async function gCompCmte(c){if(!BCSC)await bcsLoad();if(!BCSC)throw new Error("C
   const cf=PLM&&PLM.lists&&PLM.lists.cfp&&PLM.lists.cfp.slots;const official=cf&&cf.filter(Boolean).length>=12;const cm=official?cf.filter(Boolean).slice(0,25):cmteRank().map(x=>x.t).slice(0,25);
   const comp=BCSC.rows.map(x=>x.t);const N=12;const A=comp.slice(0,N),B=cm.slice(0,N);const {W,H}=dims();
   await roHead(c,W,`WEEK ${wk()} · COMPUTERS VS COMMITTEE`,"TOP 12 CHECK",official?"BCS-style computers vs the CFP rankings":"BCS-style computers vs Reed's committee projection");
-  const top=304,foot=H>W?250:150,rowH=Math.min(84,(H-top-foot)/N),colW=(W-64*2-30)/2;const heads=["THE COMPUTERS",official?"THE COMMITTEE":"COMMITTEE (PROJ.)"];
+  const top=304,foot=H>W?320:140,rowH=Math.min(84,(H-top-foot)/N),colW=(W-64*2-30)/2;const heads=["THE COMPUTERS",official?"THE COMMITTEE":"COMMITTEE (PROJ.)"];
   for(let k=0;k<2;k++){const L=k?B:A,O=k?A:B,x=64+k*(colW+30);c.font="26px Anton";c.fillStyle=GS.gold;c.textAlign="start";c.fillText(heads[k],x,top-14);c.textAlign="left";
     for(let i=0;i<L.length;i++){const t=L[i],y=top+i*rowH,miss=!O.includes(t);roPanel(c,x,y+3,colW,rowH-6);if(miss){c.save();rr(c,x,y+3,colW,rowH-6,Math.min(22,rowH*.2));c.strokeStyle=GS.gold;c.lineWidth=3;c.stroke();c.restore()}
       c.font=Math.round(rowH*.46)+"px Anton";c.fillStyle="#fff";c.textAlign="center";c.fillText(String(i+1),x+rowH*.42,y+rowH*.66);c.textAlign="left";const ls=rowH*.68;await roLogo(c,t,x+rowH*.86,y+(rowH-ls)/2,ls);
@@ -1915,8 +1915,8 @@ async function gCompCmte(c){if(!BCSC)await bcsLoad();if(!BCSC)throw new Error("C
       c.font="600 "+Math.round(rowH*.24)+"px Oswald";const tgw=c.measureText(tag).width;const z=fit(c,nm,"$px Anton",Math.round(rowH*.4),colW-(tx-x)-tgw-34);c.font=z+"px Anton";c.fillText(nm,tx,y+rowH*.64);
       c.font="600 "+Math.round(rowH*.24)+"px Oswald";c.fillStyle=miss?GS.gold:"rgba(255,255,255,.6)";c.textAlign="right";c.fillText(tag,x+colW-16,y+rowH*.62);c.textAlign="left"}}
   const U=[...new Set(A.concat(B))].map(t=>{const a=comp.indexOf(t)+1||40,b=cm.indexOf(t)+1||30;return {t,a,b,d:Math.abs(a-b)}}).sort((x,y)=>y.d-x.d).slice(0,H>W?3:2);
-  const fy=top+N*rowH+26;c.font="26px Anton";c.fillStyle=GS.gold;c.fillText("BIGGEST DISAGREEMENTS",64,fy+20);
-  U.forEach((u,i)=>{const line=`${u.t.toUpperCase()}: COMPUTERS #${u.a>=40?"NR":u.a} · COMMITTEE ${u.b>=30?"NR":"#"+u.b}`;const z=fit(c,line,"600 $px Oswald",30,W-128);c.font="600 "+z+"px Oswald";c.fillStyle="#fff";c.fillText(line,64,fy+60+i*(z+12))})}
+  if(H<=W){chrome(c,W,H);return{W,H}}const fy=top+N*rowH+26;c.font="26px Anton";c.fillStyle=GS.gold;c.fillText("BIGGEST DISAGREEMENTS",64,fy+20);
+  U.forEach((u,i)=>{const line=`${u.t.toUpperCase()}: COMPUTERS #${u.a>=40?"NR":u.a} · COMMITTEE ${u.b>=30?"NR":"#"+u.b}`;const z=fit(c,line,"600 $px Oswald",30,W-128);c.font="600 "+z+"px Oswald";c.fillStyle="#fff";c.fillText(line,64,fy+60+i*(z+12))});chrome(c,W,H);return{W,H}}
 async function gPitchMan(c){let U=[];try{U=upsetList(true)}catch(e){}U=U.filter(g=>g.ups&&g.ups.spread>=7).sort((a,b)=>b.ups.idx-a.ups.idx).slice(0,+gopt.roN>4?4:(+gopt.roN||3));if(!U.length)throw new Error("No 7+ point underdogs on the board.");const {W,H}=dims();await roHead(c,W,`WEEK ${wk()} · REED KNAPPER`,"REED’S LONGSHOTS","Longshot dogs the model likes");
   const LY=listLay(U.length,W,H,262,140,16,230);for(let i=0;i<U.length;i++){const g=U[i],u=g.ups;const P=LY.pos(i);roPanel(c,P.x,P.y,P.w,P.h);const ls=Math.min(P.h*.72,150);await roLogo(c,u.dog,P.x+22,P.y+(P.h-ls)/2,ls);
     const tx=P.x+22+ls+26,tw=P.x+P.w-28-tx;const t1=`${u.dog.toUpperCase()} +${u.spread}`;const z1=fit(c,t1,"$px Anton",Math.min(P.h*.27,64),tw*.62);c.font=z1+"px Anton";c.fillStyle="#fff";c.fillText(t1,tx,P.y+P.h*.36);
