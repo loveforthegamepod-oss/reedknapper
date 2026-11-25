@@ -138,9 +138,9 @@ footer{padding:34px 0 50px;border-top:1px solid var(--line);color:var(--muted);f
       <div class="feed yt"><div class="fh"><b>YouTube</b><a href="https://www.youtube.com/@ReedKnapperCFB?sub_confirmation=1" target="_blank" rel="noopener">Subscribe</a></div>
         <div class="ytbox"><iframe src="https://www.youtube.com/embed/videoseries?list=UUAYbQep6DZ0fQqhTM31rjUQ&amp;rel=0" title="Reed Knapper College Football: latest videos" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
         <p class="fs">Latest uploads, newest first. Use the playlist button in the player to pick an episode.</p></div>
-      <div class="feed"><div class="fh"><b>X</b><a href="https://x.com/ReedKnapperCFB" target="_blank" rel="noopener">Follow</a></div>
+      <div class="feed x"><div class="fh"><b>X</b><a href="https://x.com/ReedKnapperCFB" target="_blank" rel="noopener">Follow</a></div>
         <div class="fbody"><a class="twitter-timeline" data-theme="dark" data-height="560" data-chrome="noheader nofooter transparent" data-dnt="true" href="https://twitter.com/ReedKnapperCFB">Posts by @ReedKnapperCFB</a></div></div>
-      <div class="feed"><div class="fh"><b>TikTok</b><a href="https://www.tiktok.com/@reedknappercfb" target="_blank" rel="noopener">Follow</a></div>
+      <div class="feed tt"><div class="fh"><b>TikTok</b><a href="https://www.tiktok.com/@reedknappercfb" target="_blank" rel="noopener">Follow</a></div>
         <div class="fbody"><blockquote class="tiktok-embed" cite="https://www.tiktok.com/@reedknappercfb" data-unique-id="reedknappercfb" data-embed-type="creator" style="max-width:780px;min-width:288px;margin:0"><section><a target="_blank" rel="noopener" href="https://www.tiktok.com/@reedknappercfb">@reedknappercfb</a></section></blockquote></div></div>
       <div class="feed ig"><div class="fh"><b>Instagram</b><a href="https://www.instagram.com/reedknappercfb/" target="_blank" rel="noopener">Follow</a></div>
         <a class="igcard" href="https://www.instagram.com/reedknappercfb/" target="_blank" rel="noopener"><img src="rk-brand.svg?v=5" alt=""><span><b>@reedknappercfb</b><small>Reed Knapper College Football</small><em>Picks graphics, Top 25, game-day posts →</em></span></a></div>
@@ -242,5 +242,14 @@ footer{padding:34px 0 50px;border-top:1px solid var(--line);color:var(--muted);f
 </script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script async src="https://www.tiktok.com/embed.js"></script>
+<script>
+/* feed fallbacks: X timelines and TikTok profile embeds don't load for every visitor; show a follow card instead of a blank box */
+setTimeout(function(){
+  function card(sel,handle,url,line){var f=document.querySelector(sel);if(!f)return;var b=f.querySelector('.fbody');if(!b)return;var ok=[].some.call(b.querySelectorAll('iframe'),function(i){return i.getBoundingClientRect().height>150});if(ok)return;
+    b.innerHTML='<a class="igcard" href="'+url+'" target="_blank" rel="noopener"><img src="rk-brand.svg?v=5" alt=""><span><b>'+handle+'</b><small>Reed Knapper College Football</small><em>'+line+'</em></span></a>';b.style.maxHeight='none'}
+  card('.feed.x','@ReedKnapperCFB','https://x.com/ReedKnapperCFB','Picks, takes and live game reactions →');
+  card('.feed.tt','@reedknappercfb','https://www.tiktok.com/@reedknappercfb','Short breakdowns and show clips →');
+},9000);
+</script>
 </body>
 </html>
